@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+   BD:
+      image: postgres:17
+      container_name: BD_herejesSazon
+      restart: always
+      volumes:
+         - postgre_data:/var/lib/postgresql/data
+      ports:
+         - "5432:5432"
+      environment:
+         - DATABASE_HOST=${DATABASE_HOST}
+         - POSTGRES_USER=${POSTGRES_USER}
+         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+         - POSTGRES_DB=HerejesSazonBD
+
+
+
+   webapp:
+    build: .
+    
+    container_name: herejesSazonApp
+  
+    ports:
+    - "8080:8080"
+    depends_on:
+      - BD
+
+volumes:
+   postgre_data:
