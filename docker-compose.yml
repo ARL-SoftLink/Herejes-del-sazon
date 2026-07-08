@@ -6,7 +6,7 @@ services:
       restart: always
       volumes:
          - postgre_data:/var/lib/postgresql/data
-         - ./backups:/backups
+         - ./backups:/backups # extraccion de respaldos(full, diff,log)
       ports:
          - "5432:5432"
       environment:
@@ -22,6 +22,18 @@ services:
          start_period: 30s
       networks: 
          - app_network
+# servicio para mitigar el desastre con el contenedor dbms cuando surtan cambios SQL   
+   flyway:
+      image: flyway/flyway:latest
+      container_name: flyway
+      command: -url=jdbc:postgresql://BD:5432/HerejesSazonBD -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} migrate
+      volumes:
+         - ./migrations:/flyway/sql
+      depends_on:
+         BD:
+            condition: service_healthy
+      networks:
+         - app_network
 
 
    webapp:
@@ -29,13 +41,17 @@ services:
     container_name: herejesSazonApp
     ports:
       - "8080:8080"
+    volumes:
+      - .:/webapp #bindmount local y contenedor
+      - ./migrations:/migrations #facilitarle la ruta al .sh
     environment:
+      - DATABASE_HOST=BD # esta variable permitira que el contenedor webapp pueda comunicarse con el contenedor de la base
       - POSTGRES_DB=${POSTGRES_DB:-HerejesSazonBD}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
-      BD:
-         condition: service_healthy
+      flyway:
+         condition: service_completed_successfully
     networks:
       - app_network
 
