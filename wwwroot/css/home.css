@@ -1,0 +1,179 @@
+/*======================================
+            HERO
+======================================*/
+
+.hero{
+
+    position:relative;
+
+    width:100%;
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    background-image:url("../images/hero/hero-home.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    overflow:hidden;
+
+}
+
+/*======================================
+            Overlay
+======================================*/
+
+.hero-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+}
+
+/*======================================
+            Contenido
+======================================*/
+
+.hero-content{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:700px;
+
+    color:white;
+
+}
+
+.hero-subtitle{
+
+    display:inline-block;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+
+    margin-bottom:20px;
+
+    color:#FFD28C;
+
+    font-weight:600;
+
+}
+
+.hero h1{
+
+    font-family:var(--font-secondary);
+
+    font-size:4.5rem;
+
+    margin-bottom:25px;
+
+    line-height:1.1;
+
+}
+
+.hero p{
+
+    font-size:1.2rem;
+
+    line-height:1.8;
+
+    margin-bottom:45px;
+
+    color:#EEEEEE;
+
+}
+
+/*======================================
+            BOTONES
+======================================*/
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.btn-secondary-custom{
+
+    display:inline-block;
+
+    padding:14px 34px;
+
+    border-radius:40px;
+
+    border:2px solid white;
+
+    color:white;
+
+    transition:var(--transition);
+
+}
+
+.btn-secondary-custom:hover{
+
+    background:white;
+
+    color:var(--color-primary);
+
+}
+
+/*======================================
+        Indicador Scroll
+======================================*/
+
+.scroll-indicator{
+
+    position:absolute;
+
+    bottom:30px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:white;
+
+    font-size:2rem;
+
+    animation:scrollAnimation 2s infinite;
+
+    z-index:2;
+
+}
+
+@keyframes scrollAnimation{
+
+    0%{
+
+        transform:translate(-50%,0);
+
+    }
+
+    50%{
+
+        transform:translate(-50%,10px);
+
+    }
+
+    100%{
+
+        transform:translate(-50%,0);
+
+    }
+
+}

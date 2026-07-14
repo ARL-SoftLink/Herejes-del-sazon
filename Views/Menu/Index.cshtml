@@ -1,0 +1,28 @@
+@model herejes_del_sazon.Models.ViewModels.MenuViewModel
+
+@{
+    ViewData["Title"] = "Menú";
+}
+
+<section class="container-custom">
+
+    <div class="section-header">
+
+        <h1>Nuestro Menú</h1>
+
+        <p>
+            Descubre todos nuestros platillos preparados con ingredientes locales.
+        </p>
+
+    </div>
+
+    <div class="food-grid">
+
+        @foreach (var dish in Model.Dishes)
+        {
+            <partial name="_FoodCard" model="dish" />
+        }
+
+    </div>
+
+</section>

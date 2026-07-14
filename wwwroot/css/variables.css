@@ -1,0 +1,67 @@
+/* ===========================
+   PALETA DE COLORES
+=========================== */
+
+:root{
+
+    --color-primary:#E67E22;
+    --color-primary-dark:#CF711D;
+
+    --color-secondary:#2F2F2F;
+
+    --color-dark:#1A1A1A;
+
+    --color-light:#FFFFFF;
+
+    --color-gray:#F4F4F4;
+
+    --color-text:#4B4B4B;
+
+    --color-border:#DDDDDD;
+
+    --color-success:#2E8B57;
+
+    --color-danger:#D9534F;
+
+}
+
+
+/* ===========================
+   TIPOGRAFÍA
+=========================== */
+
+:root{
+
+    --font-primary:'Poppins',sans-serif;
+
+    --font-secondary:'Playfair Display',serif;
+
+}
+
+
+/* ===========================
+   TAMAÑOS
+=========================== */
+
+:root{
+
+    --navbar-height:85px;
+
+    --border-radius:12px;
+
+    --transition:.35s ease;
+
+}
+
+
+/* ===========================
+   SOMBRAS
+=========================== */
+
+:root{
+
+    --shadow-small:0 4px 10px rgba(0,0,0,.08);
+
+    --shadow-medium:0 8px 20px rgba(0,0,0,.12);
+
+}

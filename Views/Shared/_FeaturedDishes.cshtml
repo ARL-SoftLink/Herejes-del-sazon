@@ -1,0 +1,32 @@
+@model List<herejes_del_sazon.Models.ViewModels.FoodCardViewModel>
+
+<section class="container-custom">
+
+    <div class="section-title">
+
+        <h2>Especiales de la Casa</h2>
+
+        <p>
+
+            Descubre nuestros platillos más representativos elaborados
+            con ingredientes frescos provenientes de Centroamérica.
+
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        @foreach (var platillo in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+
+                <partial name="_FoodCard"
+                         model="platillo" />
+
+            </div>
+        }
+
+    </div>
+
+</section>

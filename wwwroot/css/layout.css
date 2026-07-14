@@ -1,0 +1,78 @@
+/*=============================
+            NAVBAR
+=============================*/
+
+#mainNavbar{
+
+    height:var(--navbar-height);
+
+    transition:var(--transition);
+
+    background:transparent;
+
+    position:fixed;
+
+    width:100%;
+
+    z-index:999;
+
+}
+
+/* Cuando hace Scroll */
+
+#mainNavbar.scrolled{
+
+    background:var(--color-primary);
+
+    box-shadow:var(--shadow-small);
+
+}
+
+/* Logo */
+
+.navbar-brand{
+
+    color:white;
+
+    font-size:1.7rem;
+
+    font-weight:700;
+
+}
+
+/* Links */
+
+.nav-link{
+
+    color:white;
+
+    margin-left:20px;
+
+    transition:var(--transition);
+
+    font-weight:500;
+
+}
+
+.nav-link:hover{
+
+    color:#FFD8A8;
+
+}
+
+
+/*=============================
+            FOOTER
+=============================*/
+
+footer{
+
+    background:var(--color-dark);
+
+    color:white;
+
+    padding:45px 0;
+
+    text-align:center;
+
+}

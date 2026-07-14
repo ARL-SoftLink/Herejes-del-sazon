@@ -1,0 +1,58 @@
+@model herejes_del_sazon.Models.ViewModels.FoodCardViewModel
+
+
+
+<article class="food-card">
+
+    <div class="food-card-image">
+
+        <span class="food-category">
+
+            @Model.Categoria
+
+        </span>
+
+        <img src="@Model.Imagen"
+             alt="@Model.Nombre">
+
+    </div>
+
+    <div class="food-card-body">
+
+        <h3>@Model.Nombre</h3>
+
+        <p>@Model.Descripcion</p>
+
+        <div class="food-tags">
+
+            @foreach(var etiqueta in Model.Etiquetas)
+            {
+                <span class="food-tag">
+
+                    @etiqueta
+
+                </span>
+            }
+
+        </div>
+
+        <div class="food-footer">
+
+            <span class="food-price">
+
+                $@Model.Precio
+
+            </span>
+
+            <a href="#"
+               class="btn-primary-custom">
+
+                Ver más
+
+            </a>
+
+        </div>
+
+    </div>
+
+</article>

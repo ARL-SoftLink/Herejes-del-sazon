@@ -1,0 +1,73 @@
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:var(--font-primary);
+
+    color:var(--color-text);
+
+    background:var(--color-light);
+
+    overflow-x:hidden;
+
+}
+
+img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+ul{
+
+    list-style:none;
+
+}
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    background:none;
+
+}
+
+section{
+
+    padding:90px 0;
+
+}
+
+.container-custom{
+
+    width:min(90%,1300px);
+
+    margin:auto;
+
+}
