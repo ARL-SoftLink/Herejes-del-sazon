@@ -1,0 +1,30 @@
+# Dependencias y compilación local (pesados)
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+.vs/
+
+# Control de versiones (pesado)
+.git/
+.gitignore
+README.md
+
+# Herramientas externas(basura de kubers) (binarios grandes)
+kubectl
+minikube-linux-amd64
+
+# Logs y temporales
+*.log
+*.tmp
+portforward.log
+
+# Entornos (por seguridad, aunque no los copies, evita filtraciones)
+.env
+appsettings.Development.json
+secrets.json
+
+# Migraciones (si no las usas en el build)
+#migrations/

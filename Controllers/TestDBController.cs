@@ -32,11 +32,12 @@ public class TestDbController : Controller
         {
             // Reconstruye la cadena de conexión igual que en Program.cs
             // O la obtienes de la configuración si la guardaste. La reconstruimos:
-            var host = "BD";  // o leer de variable de entorno
+            var host = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "host.docker.internal";
+            var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "HerejesSazonBD";
             var user = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
-            var connString = $"Host={host};Database={db};Username={user};Password={password}";
+            var connString = $"Host={host};Port={port};Database={db};Username={user};Password={password}";
 
             using var conn = new NpgsqlConnection(connString);
             conn.Open();

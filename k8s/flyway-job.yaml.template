@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flyway-migrate
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: flyway
+        image: flyway/flyway:latest
+        command: ["flyway"]
+        args:
+          - "-url=jdbc:postgresql://postgresql-ha-rw:5432/__POSTGRES_DB__"
+          - "-user=$(POSTGRES_USER)"
+          - "-password=$(POSTGRES_PASSWORD)"
+          - "-locations=filesystem:/flyway/sql"
+          - "-connectRetries=10"
+          - "migrate"
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-credentials
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-credentials
+              key: password
+        volumeMounts:
+        - name: sql-scripts
+          mountPath: /flyway/sql
+      volumes:
+      - name: sql-scripts
+        configMap:
+          name: flyway-sql-scripts
