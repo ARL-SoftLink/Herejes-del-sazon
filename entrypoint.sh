@@ -2,8 +2,8 @@
 set -e  # Detiene la ejecución si algo falla
 
 echo "Esperando a que la base de datos esté lista..."
-until PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$DATABASE_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q'; do
-  echo "BD no disponible, reintentando en 2 segundos..."
+until PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$DATABASE_HOST" -p "$DATABASE_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q'; do
+  echo "Esperando a que PostgreSQL esté listo en $DATABASE_HOST:$DATABASE_PORT..."
   sleep 2
 done
 echo "Base de datos disponible."
@@ -39,7 +39,7 @@ fi
 
 # === EJECUTAR SCAFFOLD (si es necesario) ===
 if [ "$SHOULD_RUN_SCAFFOLD" = true ]; then
-  CONNSTRING="Host=$DATABASE_HOST;Database=$POSTGRES_DB;Username=$POSTGRES_USER;Password=$POSTGRES_PASSWORD"
+  CONNSTRING="Host=$DATABASE_HOST;Port=$DATABASE_PORT;Database=$POSTGRES_DB;Username=$POSTGRES_USER;Password=$POSTGRES_PASSWORD"
   
   # ===== NUEVO: Limpieza y restauración limpia =====
   echo "Eliminando cachés previas (obj/ y bin/) para evitar conflictos de plataforma..."
@@ -52,7 +52,8 @@ if [ "$SHOULD_RUN_SCAFFOLD" = true ]; then
   dotnet ef dbcontext scaffold "$CONNSTRING" Npgsql.EntityFrameworkCore.PostgreSQL \
     --output-dir Models \
     --context MyDBContext \
-    --force
+    --force \
+    --no-onconfiguring # comando agregado el 120726 tras hallazgo critico con exposicion de credenciales
   
   echo "Scaffold completado."
   

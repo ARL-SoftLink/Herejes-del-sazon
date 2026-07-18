@@ -1,41 +1,5 @@
 version: '3.8'
 services:
-   BD:
-      image: postgres:17
-      container_name: BD_herejesSazon
-      restart: always
-      volumes:
-         - postgre_data:/var/lib/postgresql/data
-         - ./backups:/backups # extraccion de respaldos(full, diff,log)
-      ports:
-         - "5432:5432"
-      environment:
-         - DATABASE_HOST=${DATABASE_HOST}
-         - POSTGRES_USER=${POSTGRES_USER}
-         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-         - POSTGRES_DB=HerejesSazonBD
-      healthcheck:
-         test: ["CMD-SHELL","pg_isready -U ${POSTGRES_USER} -d HerejesSazonBD"]
-         interval: 10s
-         timeout: 5s
-         retries: 5
-         start_period: 30s
-      networks: 
-         - app_network
-# servicio para mitigar el desastre con el contenedor dbms cuando surtan cambios SQL   
-   flyway:
-      image: flyway/flyway:latest
-      container_name: flyway
-      command: -url=jdbc:postgresql://BD:5432/HerejesSazonBD -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} migrate
-      volumes:
-         - ./migrations:/flyway/sql
-      depends_on:
-         BD:
-            condition: service_healthy
-      networks:
-         - app_network
-
-
    webapp:
     build: .
     container_name: herejesSazonApp
@@ -45,18 +9,15 @@ services:
       - .:/webapp #bindmount local y contenedor
       - ./migrations:/migrations #facilitarle la ruta al .sh
     environment:
-      - DATABASE_HOST=BD # esta variable permitira que el contenedor webapp pueda comunicarse con el contenedor de la base
+      - DATABASE_HOST=host.docker.internal
+      - DATABASE_PORT=5432
       - POSTGRES_DB=${POSTGRES_DB:-HerejesSazonBD}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    depends_on:
-      flyway:
-         condition: service_completed_successfully
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - app_network
-
-volumes:
-   postgre_data:
 
 networks:
   app_network:

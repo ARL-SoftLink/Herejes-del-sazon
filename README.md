@@ -41,9 +41,177 @@ Mientras otros restaurantes familiares apuestan por la seguridad de los platos c
 - **Económico**: Generar una comunidad de pequeños productores locales que provean al restaurante, impulsando la economía regional.
 - **Social**: Que las familias redescubran el placer de comer juntas platos diferentes, rompiendo la rutina gastronómica sin conflictos generacionales.
 - **Digital**: Convertir el sitio web en un referente de diseño inclusivo y contenido gastronómico interactivo en Centroamérica, inspirando a otros emprendedores.
+---
 
----  
+# Despliegue de Herejes Sazon
 
+Esta guía te permitirá levantar el entorno de desarrollo y producción de la aplicación web **Herejes Sazon** (C# MVC) utilizando contenedores Docker.
+
+## Prerrequisitos
+
+Asegúrate de tener instalado en tu máquina:
+
+- [Docker](https://docs.docker.com/get-docker/) (Motor de contenedores, necesario para construir la imagen y para el driver de Minikube).
+- [Git](https://git-scm.com/) (para clonar el repositorio)
+- **kubectl** (CLI para controlar Kubernetes) (pasos de instalacion incluida en esta guia).
+- **Minikube** (Clúster local de Kubernetes)(pasos de instalacion incluida en esta guia).
+- **Helm** (Gestor de paquetes para Kubernetes)(pasos de instalacion incluida en esta guia).
+
+## Configuración del Entorno
+
+1. **Clona el repositorio dentro de tu terminal WSL (no en PowerShell/CMD ni en una ruta de Windows):**
+
+   > ⚠️ Por defecto, `git clone` ejecutado desde PowerShell, CMD o herramientas gráficas (GitHub Desktop, el explorador de archivos) termina guardando el proyecto en una ruta de Windows, típicamente `C:\Users\TuUsuario\...`. Para este proyecto **eso rompe el flujo**: todos los pasos siguientes (`kubectl`, `minikube`, `docker`, `start.sh`) se ejecutan desde WSL, y acceder a un proyecto que vive en `C:\` desde dentro de WSL (a través de `/mnt/c/...`) es notablemente más lento y puede causar errores extraños de permisos y de finales de línea. Si ya clonaste el repo en una ruta de Windows, vuelve a clonarlo siguiendo estos pasos en vez de reutilizar esa copia.
+
+   Abre tu terminal WSL (busca "Ubuntu" en el menú Inicio, o desde PowerShell ejecuta `wsl`) y, **ya dentro de Linux**, clona el repositorio en tu carpeta personal:
+
+```bash
+   cd ~
+   mkdir -p proyectos && cd proyectos
+   git clone https://github.com/ARL-SoftLink/Herejes-del-sazon.git
+   cd herejes_del_sazon
+```
+
+   Tu proyecto queda entonces en algo como `/home/tu-usuario/proyectos/herejes_del_sazon` — dentro del sistema de archivos de WSL, no en `C:\`.
+
+   > **Nota:** puedes seguir editando con una interfaz gráfica normal. Con el repo ya clonado en WSL, ejecuta `code .` desde esa misma terminal para abrir VS Code conectado remotamente a WSL (verás "WSL: Ubuntu" en la esquina inferior izquierda). La terminal integrada de VS Code, en ese modo, ya es una terminal de WSL.
+
+2. **Variables de entorno:** Crea un archivo .env en la raíz del proyecto para sobrescribir la configuración por defecto (como cadenas de conexión o puertos).
+```bash
+DATABASE_HOST=host.docker.internal
+DATABASE_PORT=5432
+POSTGRES_USER=tu_usuario
+POSTGRES_PASSWORD=tu_contra_segura
+POSTGRES_DB=HerejesSazonBD
+```
+### Configuracion de parametros clave para docker desktop(usuarios windows)
+
+> ⚠️ Este paso es un requisito previo a la sección "Instalación de herramientas". Sin esto, `minikube start --driver=docker` fallará o se quedará colgado en Windows.
+
+1.**Instala Docker Desktop** desde [docker.com](https://www.docker.com/products/docker-desktop/) si aún no lo tienes.
+
+2.**Activa el motor basado en WSL2:**
+Abre Docker Desktop → `Settings` → `General` → marca la casilla **"Use the WSL 2 based engine"**.
+
+3.**Activa la integración con tu distribución de WSL:**
+Ve a `Settings` → `Resources` → `WSL Integration` → activa el interruptor junto a tu distribución (por ejemplo, `Ubuntu`) → clic en **Apply & Restart**.
+Esto es lo que permite que el comando `docker` (y por lo tanto Minikube) funcione dentro de tu terminal WSL.
+
+4.**Asigna recursos según tu hardware real (no copies un valor a ciegas):**
+
+Antes de tocar nada, revisa cuánta RAM y núcleos tiene tu máquina físicamente (Windows, no WSL): `Configuración` → `Sistema` → `Acerca de`, o en PowerShell:
+```powershell
+systeminfo | findstr /C:"Total Physical Memory"
+echo $env:NUMBER_OF_PROCESSORS
+```
+
+> ⚠️ **No asignes a WSL2 más recursos de los que tu máquina tiene físicamente.** Si tu equipo tiene 4GB de RAM y le pides `memory=6GB`, no "consigues" memoria extra: Windows y WSL2 empiezan a competir por RAM insuficiente, todo el sistema se vuelve extremadamente lento, y en algunos casos WSL2 ni siquiera arranca. La regla es dejar como mínimo un 40-50% de la RAM y al menos 1-2 núcleos libres para Windows y para el propio Docker Desktop (que también consume recursos en segundo plano, incluso en reposo).
+
+Usa esta tabla como referencia:
+
+| RAM total del equipo | Núcleos totales | `.wslconfig` recomendado |
+|---|---|---|
+| 16GB o más | 8+ | `memory=6GB`, `processors=4` |
+| 8GB | 4 | `memory=4GB`, `processors=2` |
+| 4GB o menos | ≤4 | *(ver nota abajo)* |
+
+Crea o edita `%UserProfile%\.wslconfig`:
+```ini
+[wsl2]
+memory=4GB
+processors=2
+```
+Guarda el archivo y reinicia WSL desde PowerShell:
+```powershell
+wsl --shutdown
+```
+Vuelve a abrir tu terminal WSL para que los cambios apliquen.
+
+> **Si tu equipo tiene 4GB de RAM o menos:**
+> Sé honesto contigo mismo antes de invertir tiempo aquí: un clúster de PostgreSQL con 3 réplicas (CNPG) + el operador + Docker Desktop + la webapp, todo corriendo a la vez sobre 4GB, va a ser lento en el mejor de los casos, e inestable en el peor. Dos alternativas mejores que forzar el `.wslconfig`:
+> - **Reduce `instances: 3` a `instances: 1`** en el manifiesto del clúster (`k8s/postgresql-cluster.yaml.template`) solo en esta máquina, para poder desarrollar sin failover local (perderás la posibilidad de probar el failover ahí, pero podrás trabajar en el resto de la app).
+> - **Usa GitHub Codespaces** para este proyecto en vez de Minikube local — los recursos ya están garantizados por el tipo de máquina que elijas al crear el Codespace, sin pelear con los límites de tu laptop.
+> Si aun así quieres intentarlo localmente, no superes `memory=2GB`, `processors=2`, y cierra el resto de aplicaciones (especialmente el navegador) antes de levantar el entorno.
+
+5.**Verifica la conexión desde WSL:**
+```bash
+docker info > /dev/null && echo "Docker OK"
+```
+Si este comando falla, revisa los pasos 2 y 3 antes de continuar.
+
+> **Nota:**
+> Si al ejecutar `minikube start` ves errores relacionados con Hyper-V o con el driver, confirma que no tengas otro hipervisor (VirtualBox, Hyper-V standalone) interfiriendo; con `--driver=docker` no se necesita ninguno, porque Minikube crea un contenedor, no una máquina virtual aparte.
+
+### Instalacion de herramientas (ejecutar en WSL o windows Nativo)
+
+> ⚠️ INSTRUCCIÓN IMPORTANTE PARA USUARIOS WINDOWS
+> **Todos los comandos de instalación de `kubectl`, `Minikube` y `Helm` deben ejecutarse DENTRO de tu terminal WSL (Windows Subsystem for Linux)**, por ejemplo, en tu distribución Ubuntu/Debian. 
+> **No uses PowerShell ni CMD** para estos pasos, ya que los comandos `sudo`, `install` y los scripts bash no son nativos de Windows.
+
+Copia y pega los siguientes bloques en tu terminal WSL/Linux:
+
+1.**Instalar kubectl:**
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+``` 
+2.**Instalar minukube**
+```bash
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+``` 
+3.**Instalar Helm**
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+4. **Verificar que todo esta instalado:**
+```bash
+kubectl version --client
+minikube version
+helm version
+```
+5.**Iniciar el cluster de MiniKube**
+```bash 
+minikube start --driver=docker
+```
+6. **Instalar el operador CloudNativePG** 
+```bash
+helm repo add cloudnative-pg https://cloudnative-pg.github.io/charts
+helm repo update
+helm upgrade --install cnpg cloudnative-pg/cloudnative-pg \
+  --namespace cnpg-system --create-namespace
+
+# Esperar a que el operador esté disponible
+kubectl wait --for=condition=Available deployment --all -n cnpg-system --timeout=180s
+```
+> **Nota:**
+> Este ultimo paso está incluido dentro del script shell encargado de levantar toda la app, hacerlo de todas formas no afecta en nada el despliegue 
+
+## Conceder permisos de ejecucion
+En la terminal WSL con la ruta apuntando a la raiz del proyecto, escribe y ejecuta estos comandos
+```bash
+# otorgar permiso a: entrypoint.sh
+chmod +x entrypoint.sh
+# permiso para start.sh
+chmod +x start.sh
+# permiso para stop.sh
+chmod +x stop.sh
+```
+> **Nota:** Si estas en VS code confirma que la terminal integrada pertenece a WSL y no a windows 
+
+## Iniciar la app
+En esa misma terminal WSL apuntando hacia la raiz del proyecto, escribe y ejecuta
+1. **levantar la app:**
+```bash
+./start.sh
+```
+2. **Detener la app:**
+```bash
+./stop.sh
+```
+> Importante: nunca omitas el `./` de lo contrario la terminal arroja: `No such file ...`.
+
+---
 ## 🍽️ Menú base
 
 A continuación se listan los platillos que representan la identidad de **Herejes del Sazón**.  
@@ -111,12 +279,3 @@ Todos elaborados exclusivamente con ingredientes centroamericanos.
 *Backend:* add
 *Base de datos:* PostgreSQL  
 *Control de versiones:* Git + GitHub  
-
-
-
----
-
-## 📦 Instalación y uso (ejemplo)
-
-```bash
-

@@ -12,11 +12,17 @@
 *.env
 
 # User-specific carpets
-migrations/.last_scaffold_h
-Models/*
+migrations/.last_scaffold_hash
+k8s/flyway-job.yaml
+k8s/postgresql-cluster.yaml
+
 !Models/ErrorViewModel.cs
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+
+# Kubernetes files
+/kubectl
+/minikube-linux-amd64
 
 # Mono auto generated files
 mono_crash.*

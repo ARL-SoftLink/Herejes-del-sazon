@@ -1,0 +1,28 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql-ha
+spec:
+  instances: 3
+
+  # Bootstrap: crea la base de datos y el usuario dueño a partir del Secret
+  # que genera start-dev.sh (ver Paso 1 y Paso 7).
+  bootstrap:
+    initdb:
+      database: __POSTGRES_DB__
+      owner: __POSTGRES_USER__
+      secret:
+        name: postgresql-credentials
+
+  storage:
+    size: 2Gi # ajustado manualmente
+
+  # Límites modestos para no saturar un Codespace pequeño.
+  # Ajusta según los recursos de tu máquina.
+  resources:
+    requests:
+      cpu: "50m" #minimo reqerido
+      memory: "256Mi" # minimo requerido
+    limits:
+      cpu: "__POSTGRES_CPU_LIMIT__" # ajustado dinamicamente
+      memory: "__POSTGRES_MEM_LIMIT__" # ajustado dinamicamente
