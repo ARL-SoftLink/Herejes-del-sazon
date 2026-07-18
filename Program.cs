@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // leer variables de entorno
 builder.Services.AddScoped<MenuService>();
+builder.Services.AddScoped<ReservationService>();
 
 // cadena de conexion
 var connectionString = $"Host={host};Database={db};Username={user};Password={password}";

@@ -17,10 +17,23 @@ namespace herejes_del_sazon.Controllers
         {
             var model = new MenuViewModel
             {
-                Dishes = _menuService.GetAllDishes()
+                Platillos = _menuService.GetAllDishes(),
+                Categorias = _menuService.GetCategories()
             };
 
             return View(model);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var platillo = _menuService.GetDishById(id);
+
+            if (platillo == null)
+            {
+                return NotFound();
+            }
+
+            return View(platillo);
         }
     }
 }

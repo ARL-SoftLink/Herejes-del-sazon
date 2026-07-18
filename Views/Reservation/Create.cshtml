@@ -1,0 +1,101 @@
+@model herejes_del_sazon.Models.ViewModels.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Nueva Reservación";
+}
+
+<section class="container-custom">
+
+    <div class="section-header">
+
+        <h1>Nueva Reservación</h1>
+
+        <p>
+            Completa la información para reservar tu mesa.
+        </p>
+
+    </div>
+
+    <form asp-action="Create"
+          method="post"
+          class="reservation-form">
+
+        <input asp-for="IdMesa" type="hidden"/>
+
+        <div class="form-group">
+
+            <label asp-for="NombreCliente"></label>
+
+            <input asp-for="NombreCliente"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Correo"></label>
+
+            <input asp-for="Correo"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Telefono"></label>
+
+            <input asp-for="Telefono"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Fecha"></label>
+
+            <input asp-for="Fecha"
+                   type="date"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Hora"></label>
+
+            <input asp-for="Hora"
+                   type="time"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Personas"></label>
+
+            <input asp-for="Personas"
+                   type="number"
+                   min="1"
+                   class="form-control"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <label asp-for="Observaciones"></label>
+
+            <textarea asp-for="Observaciones"
+                      class="form-control"></textarea>
+
+        </div>
+
+        <button type="submit"
+                class="btn-primary-custom">
+
+            Confirmar Reservación
+
+        </button>
+
+    </form>
+
+</section>

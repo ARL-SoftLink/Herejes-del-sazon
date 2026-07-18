@@ -1,6 +1,7 @@
 using herejes_del_sazon.Models.ViewModels;
 using herejes_del_sazon.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace herejes_del_sazon.Services
 {
@@ -24,7 +25,44 @@ namespace herejes_del_sazon.Services
 
             Categoria = platillo.IdCategoriaNavigation?.NombreCategoria ?? "Sin categoría",
 
-            Etiquetas = new List<string>()
+            Etiquetas = new List<string>(),
+
+            Ingredientes = platillo.IdIngredientes
+              .Select(i => i.Nombre ?? "")
+              .Where(nombre => !string.IsNullOrWhiteSpace(nombre))
+                .ToList()
+           };
+        }
+
+        private DishDetailViewModel MapToDishDetail(Platillo platillo)
+        {
+         return new DishDetailViewModel
+         {
+             Id = platillo.IdPlatillo,
+
+             Nombre = platillo.Nombre ?? "Platillo sin nombre",
+
+             Descripcion = platillo.Descripcion ?? "Sin descripción",
+
+             Precio = platillo.Precio ?? 0,
+
+             Imagen = platillo.ImagenUrl ?? "/images/platillos/default.jpg",
+
+             Categoria = platillo.IdCategoriaNavigation?.NombreCategoria ?? "Sin categoría",
+
+             Etiquetas = new List<string>(),
+
+             Ingredientes = platillo.IdIngredientes
+                 .Select(i => i.Nombre ?? "")
+                 .Where(nombre => !string.IsNullOrWhiteSpace(nombre))
+                 .ToList(),
+
+             PerfilesFamiliares = platillo.IdPerfils
+               .Select(p => p.NombrePerfil ?? "")
+               .Where(nombre => !string.IsNullOrWhiteSpace(nombre))
+               .ToList(),   
+
+               Disponible = platillo.Disponible ?? false,
            };
         }
         
@@ -93,10 +131,37 @@ namespace herejes_del_sazon.Services
         }
 
 
-        public FoodCardViewModel? GetDishById(int id)
+        public DishDetailViewModel? GetDishById(int id)
         {
-            return GetMockAllDishes()
-                .FirstOrDefault(x => x.Id == id);
+          var platillo = _context.Platillos
+             .Include(p => p.IdCategoriaNavigation)
+             .Include(p => p.IdIngredientes)
+             .FirstOrDefault(p => p.IdPlatillo == id);
+
+          if (platillo != null)
+          {
+               return MapToDishDetail(platillo);
+          }
+
+            // Mientras la BD esté vacía usamos los datos simulados
+          var mock = GetMockAllDishes()
+             .FirstOrDefault(x => x.Id == id);
+
+          if (mock == null)
+              return null;
+
+          return new DishDetailViewModel
+         {
+            Id = mock.Id,
+            Nombre = mock.Nombre,
+            Categoria = mock.Categoria,
+            Descripcion = mock.Descripcion,
+            Precio = mock.Precio,
+            Imagen = mock.Imagen,
+            Etiquetas = mock.Etiquetas,
+            Ingredientes = new List<string>(),
+            Disponible = true,
+         };
         }
         
         
@@ -188,5 +253,24 @@ namespace herejes_del_sazon.Services
                 },
             };
         }
+
+        public List<string> GetCategories()
+        {
+         var categorias = _context.Categorias
+            .Select(c => c.NombreCategoria!)
+            .Distinct()
+            .OrderBy(c => c)
+            .ToList();
+
+         if (categorias.Any())
+          return categorias;
+
+          // Datos Mock si la BD aún está vacía
+          return new List<string>
+          {
+           "Especial",
+            "Bebida"
+           };
+       }
     }
 }

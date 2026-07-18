@@ -6,6 +6,8 @@
 
 <section class="container-custom">
 
+   
+
     <div class="section-header">
 
         <h1>Nuestro Menú</h1>
@@ -16,13 +18,54 @@
 
     </div>
 
+    <div class="menu-filters">
+
+        <button class="active"
+                data-category="Todos">
+
+            Todos
+
+        </button>
+
+        @foreach (var categoria in Model.Categorias)
+        {
+            <button data-category="@categoria">
+
+                @categoria
+
+            </button>
+        }
+
+    </div>
+
+    <div id="emptyMenuMessage"
+      class="empty-menu-message"
+      style="display:none;">
+
+     <h3>No hay platillos disponibles.</h3>
+
+     <p>
+        Prueba seleccionando otra categoría.
+     </p>
+
+    </div>
+
     <div class="food-grid">
 
-        @foreach (var dish in Model.Dishes)
+        @foreach (var platillo in Model.Platillos)
         {
-            <partial name="_FoodCard" model="dish" />
+            <partial name="_FoodCard" model="platillo" />
         }
 
     </div>
 
 </section>
+
+</section>
+
+@section Scripts{
+
+    <script src="~/js/menu.js"
+            asp-append-version="true"></script>
+
+}

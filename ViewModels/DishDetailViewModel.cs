@@ -1,6 +1,6 @@
 namespace herejes_del_sazon.Models.ViewModels
 {
-    public class FoodCardViewModel
+    public class DishDetailViewModel
     {
         public int Id { get; set; }
 
@@ -17,5 +17,10 @@ namespace herejes_del_sazon.Models.ViewModels
         public List<string> Etiquetas { get; set; } = new();
 
         public List<string> Ingredientes { get; set; } = new();
+
+        public List<string> PerfilesFamiliares { get; set; } = new();
+
+        public bool Disponible { get; set; }
+        
     }
 }

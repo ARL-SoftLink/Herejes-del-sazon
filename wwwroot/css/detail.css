@@ -1,0 +1,122 @@
+/* ==========================================
+   DETALLE DEL PLATILLO
+========================================== */
+
+.dish-detail{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:4rem;
+
+    align-items:center;
+
+    margin:4rem 0;
+
+}
+
+.dish-image img{
+
+    width:100%;
+
+    border-radius:20px;
+
+    object-fit:cover;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+.dish-info h1{
+
+    margin:1rem 0;
+
+    font-size:2.6rem;
+
+}
+
+.dish-info p{
+
+    margin:1.5rem 0;
+
+    line-height:1.8;
+
+}
+
+.dish-info .food-price{
+
+    font-size:2rem;
+
+    color:var(--primary-color);
+
+    margin:2rem 0;
+
+}
+
+.dish-actions{
+
+    margin-top:2rem;
+
+}
+
+
+.detail-divider{
+
+    margin:2.5rem 0;
+
+    opacity:.15;
+
+}
+
+.dish-extra h3{
+
+    margin-bottom:1rem;
+
+    font-size:1.3rem;
+
+}
+
+.dish-extra p{
+
+    margin:0;
+
+    color:#666;
+
+}
+
+.dish-actions{
+
+    display:flex;
+
+    gap:1rem;
+
+    flex-wrap:wrap;
+
+}
+
+.btn-secondary-custom{
+
+    background:#fff;
+
+    border:2px solid var(--primary-color);
+
+    color:var(--primary-color);
+
+    border-radius:8px;
+
+    padding:.8rem 1.4rem;
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.btn-secondary-custom:hover{
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+}

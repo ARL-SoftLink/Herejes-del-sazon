@@ -1,0 +1,39 @@
+@model herejes_del_sazon.Models.ViewModels.TableCardViewModel
+
+<article class="table-card">
+
+    <div class="table-card-body">
+
+        <h3>@Model.Nombre</h3>
+
+        <p class="table-capacity">
+
+            👥 @Model.Capacidad personas
+
+        </p>
+
+        <span class="table-status @(Model.Disponible ? "available" : "occupied")">
+
+            @Model.Estado
+
+        </span>
+
+        <div class="table-footer">
+
+            
+                    <button type="button"
+                       class="btn-primary-custom select-table-btn"
+                      data-id="@Model.Id"
+                      data-name="@Model.Nombre">
+
+                         Seleccionar
+
+                    </button>
+
+          
+
+        </div>
+
+    </div>
+
+</article>

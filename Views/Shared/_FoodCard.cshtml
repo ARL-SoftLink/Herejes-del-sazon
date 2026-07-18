@@ -2,7 +2,8 @@
 
 
 
-<article class="food-card">
+<article class="food-card"
+         data-category="@Model.Categoria">
 
     <div class="food-card-image">
 
@@ -44,7 +45,9 @@
 
             </span>
 
-            <a href="#"
+            <a asp-controller="Menu"
+               asp-action="Details"
+               asp-route-id="@Model.Id"
                class="btn-primary-custom">
 
                 Ver más

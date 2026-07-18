@@ -1,0 +1,138 @@
+@model herejes_del_sazon.Models.ViewModels.DishDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Nombre;
+}
+
+<section class="container-custom">
+
+    <div class="dish-detail">
+
+        <div class="dish-image">
+
+            <img src="@Model.Imagen"
+                 alt="@Model.Nombre" />
+
+        </div>
+
+        <div class="dish-info">
+
+            <span class="food-category">
+
+                @Model.Categoria
+
+            </span>
+
+            <h1>@Model.Nombre</h1>
+
+            <p class="dish-category">
+              @Model.Categoria
+            </p>
+
+            @if (Model.Disponible)
+            {
+             <p class="dish-status available">
+                ✓ Disponible
+               </p>
+            }
+            else
+            {
+              <p class="dish-status unavailable">
+                 ✕ No disponible actualmente
+              </p>
+            }
+
+            <p>
+
+                @Model.Descripcion
+
+            </p>
+
+            <h2 class="food-price">
+
+                $@Model.Precio
+
+            </h2>
+
+            <div class="food-tags">
+
+                @foreach (var etiqueta in Model.Etiquetas)
+                {
+                    <span class="food-tag">
+
+                        @etiqueta
+
+                    </span>
+                }
+
+            </div>
+
+            <div class="dish-actions">
+
+               <button class="btn-primary-custom">
+
+                   Agregar al pedido
+
+               </button>
+
+             <button class="btn-secondary-custom">
+
+                  ❤ Agregar a favoritos
+
+             </button>
+
+            </div>
+
+            <hr class="detail-divider" />
+
+            <div class="dish-extra">
+
+               <h3>Perfiles familiares</h3>
+
+               @if (Model.PerfilesFamiliares.Any())
+              {
+                   <div class="food-tags">
+
+                     @foreach (var perfil in Model.PerfilesFamiliares)
+                     {
+                         <span class="food-tag">
+                           @perfil
+                         </span>
+                     }
+
+                   </div>
+               }
+                else
+                {
+                   <p>No hay perfiles familiares registrados para este platillo.</p>
+                }
+
+            </div>
+
+            <hr class="detail-divider"/>
+
+            <div class="dish-extra">
+
+              <h3>Reseñas</h3>
+
+               <p>
+
+                   Las reseñas de otros clientes aparecerán aquí.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+@section Styles{
+
+    <link rel="stylesheet"
+          href="~/css/detail.css"
+          asp-append-version="true"/>
+
+}

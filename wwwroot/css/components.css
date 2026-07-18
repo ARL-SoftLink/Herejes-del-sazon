@@ -268,3 +268,314 @@
     font-size:.75rem;
 
 }
+
+/* ===========================
+   FILTROS DEL MENÚ
+=========================== */
+
+.menu-filters{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:1rem;
+    margin:2rem 0;
+}
+
+.menu-filters button{
+
+    background:transparent;
+
+    border:2px solid var(--primary-color);
+
+    color:var(--primary-color);
+
+    padding:.7rem 1.5rem;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.menu-filters button:hover{
+
+    background:#ff7a00;
+
+    border-color:#ff7a00;
+
+    color:#ffffff;
+
+}
+
+.menu-filters button.active{
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+}
+
+/* ===========================
+   ANIMACIÓN DE TARJETAS
+=========================== */
+
+.food-card{
+
+    transition:
+        opacity .30s ease,
+        transform .30s ease;
+
+}
+
+.food-card.hidden{
+
+    opacity:0;
+
+    transform:scale(.95);
+
+    pointer-events:none;
+
+}
+
+/* ===========================
+   MENSAJE DE MENÚ VACÍO
+=========================== */
+
+.empty-menu-message{
+
+    text-align:center;
+
+    padding:3rem;
+
+    color:var(--text-color);
+
+}
+
+.empty-menu-message h3{
+
+    margin-bottom:1rem;
+
+}
+
+.empty-menu-message p{
+
+    opacity:.8;
+
+}
+
+.ingredient-list{
+    margin-top:1rem;
+    padding-left:1.3rem;
+}
+
+.ingredient-list li{
+    margin-bottom:.5rem;
+    color:var(--text-color);
+}
+
+.dish-category{
+    display:inline-block;
+    margin:.5rem 0 1.5rem;
+    padding:.35rem .9rem;
+
+    background:var(--primary-color);
+    color:rgb(17, 16, 16);
+
+    border-radius:999px;
+
+    font-size:.9rem;
+    font-weight:600;
+}
+
+.dish-status{
+    font-weight:600;
+    margin-bottom:1rem;
+}
+
+.available{
+    color:#2e7d32;
+}
+
+.unavailable{
+    color:#c62828;
+}
+
+/* ==========================================
+   TARJETAS DE MESAS
+========================================== */
+
+.table-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:2rem;
+
+    margin-top:2rem;
+
+}
+
+.table-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:1.5rem;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.table-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.15);
+
+}
+
+.table-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:1rem;
+
+}
+
+.table-card-body{
+
+    margin-bottom:1.5rem;
+
+}
+
+.table-card-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.table-status{
+
+    font-weight:600;
+
+}
+
+.table-status.available{
+
+    color:#2e7d32;
+
+}
+
+.table-status.unavailable{
+
+    color:#c62828;
+
+}
+
+.table-type{
+
+    background:var(--primary-color);
+
+    color:white;
+
+    padding:.3rem .8rem;
+
+    border-radius:999px;
+
+    font-size:.8rem;
+
+}
+
+/*=========================
+ FORMULARIO RESERVACIONES
+==========================*/
+
+.reservation-form{
+
+    margin-top:4rem;
+
+    background:white;
+
+    padding:2rem;
+
+    border-radius:18px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.form-group{
+
+    margin-bottom:1.5rem;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin-bottom:.5rem;
+
+}
+
+.form-actions{
+
+    margin-top:2rem;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.reservation-form textarea{
+
+    resize:vertical;
+
+}
+
+.reservation-form input,
+.reservation-form textarea{
+
+    border-radius:12px;
+
+}
+
+.table-card.selected{
+
+    border:3px solid var(--primary-color);
+
+    transform:translateY(-6px);
+
+    box-shadow:0 20px 35px rgba(0,0,0,.18);
+
+}
+
+.selected-table-info{
+
+    margin:1.5rem 0;
+
+    padding:1rem;
+
+    background:#fff5eb;
+
+    border-left:5px solid var(--primary-color);
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
