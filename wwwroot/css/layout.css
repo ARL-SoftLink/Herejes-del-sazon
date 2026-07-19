@@ -8,7 +8,7 @@
 
     transition:var(--transition);
 
-    background:transparent;
+    background:var(--color-primary);
 
     position:fixed;
 
@@ -16,6 +16,11 @@
 
     z-index:999;
 
+}
+
+/* Transparente SOLO en páginas con hero, mientras no se ha hecho scroll */
+body.has-hero #mainNavbar:not(.scrolled){
+    background: transparent;
 }
 
 /* Cuando hace Scroll */
@@ -26,6 +31,14 @@
 
     box-shadow:var(--shadow-small);
 
+}
+
+/* Evita que el navbar fijo tape el contenido en páginas sin hero */
+main{
+    padding-top: var(--navbar-height);
+}
+body.has-hero main{
+    padding-top: 0;
 }
 
 /* Logo */
