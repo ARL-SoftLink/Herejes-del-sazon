@@ -1,0 +1,73 @@
+@model herejes_del_sazon.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>Herejes del Sazón</h1>
+
+        <h3>Crear cuenta</h3>
+
+        <form asp-action="Register" method="post">
+
+          <div asp-validation-summary="ModelOnly"
+            class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+               <label asp-for="Apellido"></label>
+              <input asp-for="Apellido" class="form-control"/>
+           </div>
+
+            <div class="mb-3">
+              <label asp-for="Correo"></label>
+              <input asp-for="Correo" class="form-control"/>
+           </div>
+
+            <div class="mb-3">
+              <label asp-for="Contraseña"></label>
+              <input asp-for="Contraseña"
+               type="password"
+               class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="Telefono"></label>
+              <input asp-for="Telefono"
+                  class="form-control"/>
+            </div>
+
+           <button class="btn btn-success">
+             Registrarme
+           </button>
+
+        </form>
+
+
+    </div>
+
+</div>
+
+<hr/>
+
+<a asp-action="Login">
+    Ya tengo una cuenta
+</a>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true"/>
+}

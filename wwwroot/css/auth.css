@@ -1,0 +1,129 @@
+.auth-page{
+
+    min-height:100vh;
+
+    background:#0f0f0f;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding-top:120px;
+
+    padding-bottom:60px;
+
+}
+
+.auth-card{
+
+    width:100%;
+
+    max-width:470px;
+
+    background:#1b1b1b;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.45);
+
+    color:white;
+
+}
+
+.auth-card h1{
+
+    color:#f7941d;
+
+    text-align:center;
+
+    margin-bottom:8px;
+
+    font-weight:700;
+
+}
+
+.auth-card h3{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+    color:#ddd;
+
+}
+
+.auth-card label{
+
+    color:#ddd;
+
+    margin-bottom:6px;
+
+    font-weight:600;
+
+}
+
+.auth-card input{
+
+    background:#292929;
+
+    border:none;
+
+    color:white;
+
+}
+
+.auth-card input:focus{
+
+    background:#333;
+
+    color:white;
+
+    border:1px solid #f7941d;
+
+    box-shadow:none;
+
+}
+
+.auth-card .btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    background:#f7941d;
+
+    border:none;
+
+    font-weight:bold;
+
+}
+
+.auth-card .btn:hover{
+
+    background:#d97900;
+
+}
+
+.auth-card a{
+
+    color:#f7941d;
+
+    text-decoration:none;
+
+}
+
+.auth-card a:hover{
+
+    text-decoration:underline;
+
+}
+
+.text-danger{
+
+    font-size:.9rem;
+
+}

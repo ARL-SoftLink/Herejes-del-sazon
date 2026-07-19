@@ -1,0 +1,59 @@
+@model herejes_del_sazon.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<h2>Iniciar Sesión</h2>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>Herejes del Sazón</h1>
+
+        <h3>Iniciar sesión</h3>
+
+        <form asp-action="Login" method="post">
+
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+           <div class="mb-3">
+              <label asp-for="Correo"></label>
+              <input asp-for="Correo" class="form-control"/>
+              <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+               <label asp-for="Contraseña"></label>
+               <input asp-for="Contraseña"
+                     type="password"
+                     class="form-control"/>
+               <span asp-validation-for="Contraseña"
+                   class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-primary">
+             Iniciar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<hr />
+
+<a asp-action="Register">
+    ¿No tienes cuenta? Regístrate
+</a>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true"/>
+}

@@ -20,6 +20,8 @@ builder.Services.AddControllersWithViews();
 // leer variables de entorno
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddSession();
 
 // cadena de conexion
 var connectionString = $"Host={host};Port={port};Database={db};Username={user};Password={password}";
@@ -43,6 +45,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
