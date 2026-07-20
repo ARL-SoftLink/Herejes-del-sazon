@@ -187,7 +187,7 @@ namespace herejes_del_sazon.Services
                     Categoria = "Especial",
                     Descripcion = "Elaboradas con maíz criollo y quesillo artesanal.",
                     Precio = 7.99m,
-                    Imagen = "/images/platillos/pupusas.jpg",
+                    Imagen = "/images/platillos/pupusas.jpg",//    https://images.squarespace-cdn.com/content/v1/64c58e1fde62886ac69f49d8/598f3c19-39ec-43ca-9f05-b3e3f545bf07/pupusas-de-camaron-con-queso-cocinandose-capitan-marisco-mariscos-frescos-a-domicilio-el-salvador.jpg
                     Etiquetas = new List<string>
                     {
                         "Apto para niños",
